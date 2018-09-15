@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jQuery study</title>
+</head>
+<style>
+    em.error{
+        display: block;
+        width: 100px;
+        height: 100px;
+        background-image: url("img/error.png");
+        padding-left: 16px;
+    }
+
+    em.success{
+        display: block;
+        width: 100px;
+        height: 100px;
+        background-image: url("img/success.png");
+        padding-left: 16px;
+    }
+
+</style>
+
+<body>
+
+<form action="">
+    <input type="text" minlength="2" name="name" placeholder="请输入名字">
+    <input type="text" name="email" placeholder="请输入邮箱">
+    <input type="text" name="url" placeholder="请输入网址">
+    <input type="textarea" name="comment" placeholder="请输入评论">
+    <input type="submit" value="提交">
+</form>
+
+
+</body>
+<script src="js/jquery-3.1.1.min.js"></script>
+<script src="js/jquery.validate.min.js"></script>
+<script>
+    /*
+     *  只要引入message_zh.js就可以将提示信息显示成中文
+     *  并且想要修改提示信息，只要去修改message_zh.js就可以了
+     *
+     *  ==================================
+     *  如果不想额外引入提示信息
+     *  可以添加一个messages参数，在参数中添加提示信息即可
+     *
+     *
+     *
+     * */
+
+    $("form").validate({
+        rules: {
+            name: {
+                required: true,
+                minlength: 2
+            },
+            email: {
+                required: true,
+                email: true
+            },
+            url: {
+                url: true
+            },
+            comment: {
+                required: true
+            }
+        },
+
+
+        messages: {
+            name: {
+                required: '请输入姓名',
+                minlength: '请输入至少两个字符'
+            },
+            email: {
+                required: '请输入邮箱',
+                email: '请输入正确的邮箱格式'
+            },
+            url: {
+                url: '请输入正确的url格式'
+            },
+            comment:{
+                required:'请输入评论呀'
+            }
+        },
+
+        //创建错误提示标签
+
+        /*
+        * 实现介绍：每个验证都有一个错误和成功状态，
+        * 可以创建一个错误发生的，提示标签，会自动被添加到元素后面，比如下面会<i id="name-error" class="error">
+        * 其中，id是由input的name值加error生成的，class为errorClass来控制，但是errorClass会在input和i标签上生成
+        * 但至少，我们已经可以给i标签定义我们要的class，这样就能显示iconfont来显示图标了
+        * 更多的方法，可以参考下面网站
+        *   https://jqueryvalidation.org/category/plugin/
+        * */
+        errorClass: "yu-close",
+        errorElement:"i",
+        success: function (i) {
+            i.addClass("yu-check")
+        }
+    });
+
+
+</script>
+</html>

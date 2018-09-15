@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+
+
+</body>
+<script src="EventUtil.js"></script>
+<script type="text/javascript">
+
+    //由于用原生的类型检测方法typeof会出现一些奇怪的现象，所以才提出了更安全的类型检测
+    //原理：当使用Object原生的toString()方法时，返回的类中都有一个属性，是自己的类型
+
+    //意思是：创建一个函数，传入要检测的对象，然后通过Object返回他的构造函数名，如果和要检测的类型相等，就返回true，就测出了类型。
+    //检测是否是数组
+    function isArray(value) {
+        return Object.prototype.toString.call(value) == "[object Array]";
+    }
+    //检测是否是函数
+    function isFunction(value) {
+        return Object.prototype.toString.call(value) == "[object Function]";
+    }
+    //检测是否是正则式
+    function isRegExp(value) {
+        return Object.prototype.toString.call(value) == "[object RegExp]";
+    }
+    //检测是否是原生的JSON对象
+    var isNativeJSON = window.JSON && Object.prototype.toString.call(JSON)=="[object JSON]";
+
+
+
+</script>
+
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+<script defer>// 在normal后面，在onload之前执行
+    console.log('defer');// chrome，firefox都达不到效果，原因，defer仅在script src下才能使用
+</script>
+<script>
+    console.log('normal');
+</script>
+<script>
+    window.onload = function (ev) {
+        console.log('onload');
+    }
+</script>
+</html>

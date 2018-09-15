@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+    function loadScript(url,callback) {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        if(script.readyState){//如果script有readyState属性，那么就是ie
+            script.onreadystatechange = function () {
+                if(script.readyState === 'loaded' || script.readyState === 'complete'){
+                    script.onreadystatechange = null;
+                    callback();
+                }else{
+                    script.onload = function (ev) {
+                        callback();
+                    }
+                }
+
+                script.src = url;
+                document.getElementsByTagName('head')[0].appendChild(script);
+            }
+
+        }
+
+    }
+</script>
+</html>

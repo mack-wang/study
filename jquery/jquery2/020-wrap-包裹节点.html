@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jQuery study</title>
+</head>
+<style>
+    .mydiv {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+    }
+</style>
+<body>
+<input type="text" name="username" />
+<div class="mydiv" id="box">我</div>
+<ul class="myul">
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li title="haha">4</li>
+    <li>5</li>
+</ul>
+
+<ul class="myul2">
+    <li>a</li>
+    <li>b</li>
+    <li>c</li>
+    <li>d</li>
+</ul>
+
+
+<ul class="myul3" id="ul3">
+    <li>a</li>
+    <li>b</li>
+    <li>c</li>
+    <li>d</li>
+</ul>
+</body>
+<script src="js/jquery-3.1.1.min.js"></script>
+<script>
+
+
+    //在选择元素外套一层strong元素
+    $(".mydiv").wrap("<strong style='color:blue'></strong>");
+
+    //在每个li外都套一层strong元素（有多个strong）
+    $(".myul li").wrap("<strong style='color:blue'></strong>");
+
+    //在所有li外套一层strong元素(只有一个strong)
+    $(".myul2 li").wrapAll("<strong style='color:blue'></strong>");
+
+    //在每个li内套一层strong元素(有多个strong)
+    $(".myul3 li").wrapInner("<strong style='color:red'></strong>");
+
+    //原生js实现
+    //先创建wrap元素，再把wrap元素插入到ul3之前，再把ul3插入到wrap之中
+    var ul3 = document.getElementById("ul3");
+    var wrap = document.createElement("strong");
+    wrap.style.color="red";
+    ul3.parentNode.insertBefore(wrap, ul3);
+    wrap.appendChild(ul3);
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</html>

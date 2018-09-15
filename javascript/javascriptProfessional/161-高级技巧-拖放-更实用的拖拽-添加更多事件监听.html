@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+<div id="box2" class="draggable" style="width: 100px;height: 100px;background-color: red; position: absolute;"></div>
+
+<div id="box3"></div>
+<div id="box4"></div>
+<div id="box5"></div>
+</body>
+<script src="EventUtil.js"></script>
+<script type="text/javascript">
+
+    //以下案例做到了div跟随鼠标
+    //    EventUtil.addHandler(document,"mousemove",function (event) {
+    //        var box = document.getElementById("box");
+    //        box.style.left=event.clientX+"px";
+    //        box.style.top=event.clientY + "px";
+    //    });
+
+    //以下是通用拖放函数，只要给指定元素添加draggable类即可，使其被拖动，并注意，对象的position一定得是absolute;
+
+
+    //dragdrop有点问题
+    function EventTarget() {
+        this.handlers = {};
+    }
+    EventTarget.prototype = {
+        constructor: EventTarget,
+        //注册
+        addHandler: function(type, handler) {
+            if (typeof this.handlers[type] == "undefined") {
+                this.handlers[type] = [];
+            }
+            this.handlers[type].push(handler);
+        },
+        //触发
+        fire: function(event) {
+            if (!event.target) {
+                event.target = this;
+            }
+            if (this.handlers[event.type] instanceof Array) {
+                var handlers = this.handlers[event.type];
+                for (var i = 0, len = handlers.length; i < len; i++) {
+                    handlers[i](event);
+                }
+            }
+        },
+        //注销
+        removeHandler: function(type, handler) {
+            if (this.handlers[type] instanceof Array) {
+                var handlers = this.handlers[type];
+                for (var i = 0, len = handlers.length; i < len; i++) {
+                    if (handlers[i] === handler) {
+                        break;
+                    }
+                }
+                handlers.splice(i, 1);
+            }
+        }
+    };
+
+    var DragDrop = function() {
+
+        var dragdrop = new EventTarget();
+        var dragging = null;
+        var diffX = 0;
+        var diffY = 0;
+
+        function handleEvent(event) {
+            //获取事件和目标
+            event = EventUtil.getEvent(event);
+            var target = EventUtil.getTarget(event);
+
+            //确定事件类型
+            switch (event.type) {
+                case "mousedown":
+                    if (target.className.indexOf("draggable") > -1) {
+                        dragging = target;
+                        //鼠标在element内的坐标
+                        diffX = event.clientX - target.offsetLeft;
+                        /*
+                         console.log("鼠标在元素内的坐标: " + diffX);
+                         console.log("鼠标坐标: " + event.clientX);
+                         console.log("element坐标: " + target.offsetLeft);
+                         console.log("------------------------------");
+                         */
+                        diffY = event.clientY - target.offsetTop;
+                        dragdrop.fire({
+                            type: "dragstart",
+                            target: dragging,
+                            x: event.clientX,
+                            y: event.clientY
+                        });
+                    }
+                    break;
+
+                case "mousemove":
+                    if (dragging !== null) {
+                        //获取事件
+                        event = EventUtil.getEvent(event);
+
+                        //指定位置
+                        dragging.style.left = (event.clientX - diffX) + "px";
+                        dragging.style.top = (event.clientY - diffY) + "px";
+
+                        //触发自定义事件
+                        dragdrop.fire({
+                            type: "drag",
+                            target: dragging,
+                            x: event.clientX,
+                            y: event.clientY
+                        });
+                    }
+                    break;
+
+                case "mouseup":
+                    dragdrop.fire({
+                        type: "dragend",
+                        target: dragging,
+                        x: event.clientX,
+                        y: event.clientY
+                    });
+                    dragging = null;
+                    break;
+            }
+        };
+
+        //公共接口
+        dragdrop.enable = function() {
+            EventUtil.addHandler(document, "mousedown", handleEvent);
+            EventUtil.addHandler(document, "mousemove", handleEvent);
+            EventUtil.addHandler(document, "mouseup", handleEvent);
+        };
+        dragdrop.disable = function() {
+            EventUtil.removeHandler(document, "mousedown", handleEvent);
+            EventUtil.removeHandler(document, "mousemove", handleEvent);
+            EventUtil.removeHandler(document, "mouseup", handleEvent);
+        };
+        return dragdrop;
+    }();
+
+
+    //
+    var box2 =document.getElementById("box2");
+    var box3 =document.getElementById("box3");
+    var box4 =document.getElementById("box4");
+    var box5 =document.getElementById("box5");
+
+
+    DragDrop.enable(box2);
+
+    EventUtil.addHandler("dragstart",function (event) {
+        box3.innerHTML="拖拽刚开始时，被拖着的对象ID是："+event.target.id;
+    });
+
+    EventUtil.addHandler("drag",function (event) {
+        box4.innerHTML="拖拽进行中，被拖着的对象的ID是："+event.target.id+"他正在什么位置："+event.x+"----"+event.y;
+    });
+
+    EventUtil.addHandler("dragend",function (event) {
+        box5.innerHTML="拖拽结束后，被拖着的对象的ID是："+event.target.id+"他正在什么位置："+event.x+"----"+event.y;
+    });
+
+
+</script>
+
+</html>

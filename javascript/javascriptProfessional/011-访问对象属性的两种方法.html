@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<button onclick="fun1()">fun1</button>
+<button onclick="fun2()">fun2</button>
+<button onclick="fun3()">fun3</button>
+<button onclick="fun4()">fun4</button>
+<button onclick="fun5()">fun5</button>
+</body>
+<script type="text/javascript">
+    var person = {
+        name: 'wlc',
+        age: 24
+    };
+    alert(person.name);
+    alert(person.age);
+    alert(person['name']);//用方括号，像访问数组一样访问对象中的属性值
+    alert(person['age']);
+
+    var myname = 'name';
+    alert(person[myname]);//用方括号的好处是，可以在括号内使用变量
+
+    //for(var attributeName in object) attributeName是属性名，下面会自动遍历所有的属性名，同时attributeName就是属性名的变量，可以依次输出
+    for(var attribute in person)
+        alert(person[attribute]);
+</script>
+
+</html>

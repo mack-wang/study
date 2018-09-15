@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+    // 1.每个函数都是Function对象的一个实例，所以是一个对象
+    // 2.每个函数对象创建时，其作用域中有个内部属性[[Scope]],
+    // 3.当这个函数对象创建时，其作用域链中会默认添加全局对象
+
+    function Add(num1,num2) {
+        return num1 + num2;
+    }
+
+    var total = new Add(1,2);
+
+    // 当创建newAdd 时，他的[[Scope]]作用域链会有：windows这类的默认全局对象，还会有Add Function, total undefined这个全局对象
+    // 同时会有活动对象 指向他内部的对象比如num1,num2,arguments,this(指windows)
+    // 在他的作用域链中，活动对象在全局对象的上方
+
+    // 所以全局对象往往都是最后一个被找到并使用，所以如果在一个函数中使用到了全局对象，例如document
+    function getDom() {
+        // 那么最好的做法是把document赋值，
+        // var doc = document;并把box赋值
+        for(var i = 0;i<3;i++){
+            var box = document.getElementById('box');
+        }
+    }
+</script>
+</html>
